@@ -5,10 +5,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import random
 import numpy as np
-
-SEED = 50
-random.seed(SEED)
-np.random.seed(SEED)
+import joblib
+from config import FEATURES, TARGET
 
 df = pd.read_csv("data/archive/btc_4h_data_2018_to_2025.csv")
 df["prev_close"] = df["Close"].shift(1)
@@ -17,14 +15,17 @@ train_size = int(len(df) * 0.8)
 train = df.iloc[:train_size]
 test = df.iloc[train_size:]
 
+train.to_csv("data/train.csv", index=False)
+test.to_csv("data/test.csv", index=False)
+
+x_train = train[FEATURES]
+y_train = train[TARGET]
+
+
 def goated_model():
-    return random.randint(0, 1)
+    rf = RandomForestClassifier(n_estimators = 100)
+    rf.fit(x_train, y_train)
+    joblib.dump(rf, "./random_forest.joblib")
 
-def eval():
-    count = 0
-    for row in test.itertuples(index=False):
-        if row[-1] == goated_model():
-            count += 1
-    return count / len(test)
+goated_model()
 
-print(eval())
