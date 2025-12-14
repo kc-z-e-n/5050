@@ -1,3 +1,3 @@
 SEED = 50
-FEATURES = ["Open", "High", "Low", "Close"]
-TARGET = "open_higher_than_prev_close"
+FEATURES = ["prev_open", "prev_high", "prev_low", "prev_close"]
+TARGET = "close_higher_than_prev_close"
